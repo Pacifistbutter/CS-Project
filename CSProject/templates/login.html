@@ -1,0 +1,20 @@
+{%extends "layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block main %}
+<!--Things i can add here- A select button which uses javascript to change input type from password to text-->
+<!--Add form validation using bootstrap-->
+<form action="/login" method="post">
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" autocomplete="on" autofocus placeholder="Your email please" name="email" type="email">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="on" class="form-control mx-auto w-auto" placeholder="Password" name="pwd" type="password">
+    </div>
+    <button class="btn btn-primary" type="submit">Log In</button>
+</form>
+
+{% endblock %}
