@@ -1,0 +1,200 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Todays weather
+{% endblock %}
+
+{% block main %}
+    <div id="search-card">
+        <form class="row g-3 justify-content-lg-start" action="/today" id="locationForm" method="post">
+            <div class="col-auto">
+                <button class="btn btn-primary mb-3" type="button" onclick="getLocation()">Get location</button>
+            </div>
+            <div class="col-auto">
+                <input autocomplete="off" id="searchInput" class=" form-control col-sm-6 custom-select custom-select-sm mx-auto w-75" placeholder="City Name" name="city" type="text" list="suggestion">
+                <datalist id="suggestion">
+                </datalist>
+            </div>
+
+            <input type="hidden" id="latitudeInput" name="latitude">
+            <input type="hidden" id="longitudeInput" name="longitude">
+            
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+
+    {% if isweather %}
+    <div class="container" id="weather-card">
+        <div class="row align-items-center">
+            <div class="col">
+                <h1 class="display-4">{{ location["name"] }}, {{ location["country"] }}</h1>
+                <p class="lead">{{ condition["text"] }}</p>
+            </div>
+            <div class="col-auto">
+                <img src="{{ condition['icon'] }}" alt="weather" id="weather-icon" class="img-fluid">
+            </div>
+            <div class="col-auto">
+                <h1 class="display-2">{{ current["temp_c"]|round|int }}&deg;C</h1>
+                <p>Feels Like {{ current["feelslike_c"]|round|int }}&deg;C</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center weather-info">
+            <div class="col-12 col-sm-6 col-md-4" style="font-size: 18px; text-align: center;">
+                {% set time = (location["localtime"])[10:] %}
+                {% if (time[:3]|int) == 0 %}
+                Updated as of 12:{{ time[3:] }} AM
+                {% elif (time[:3]|int) > 12 %}
+                Updated as of {{(time[0:3]|int) % 12}}{{time[3:]}} PM
+                {% else %}
+                Updated as of {{time}} AM
+                {% endif %}
+            </div>
+        </div>
+    
+        <div class="row justify-content-center weather-info">
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>Feels Like {{current["feelslike_c"]|int}}&deg;C</p>
+            </div>
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>Wind {{current["wind_kph"]|int}} Km/h</p>
+            </div>
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>Visibility {{current["vis_km"]}} Km</p>
+            </div>
+        </div>
+    
+        <div class="row justify-content-center weather-info">
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>Pressure {{current["pressure_mb"]}} mb</p>
+            </div>
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>Humidity {{current["humidity"]}}%</p>
+            </div>
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>Precipitation {{current["precip_mm"]}} mm</p>
+            </div>
+        </div>
+    
+        <div class="row justify-content-center weather-info" style="height: 32px;">
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>UV Index {{current ["uv"]|int}}</p>
+            </div>
+            <div class="col-12 col-sm-4 weather-detail">
+                <p>US EPA AQI {{airQua["us-epa-index"]}}</p>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row justify-content-start" style="height: 64px;">
+            <div class="col justify-content-center">
+                <p class="me-lg-4" style="font-size: 32px;">Daily</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-evenly">
+            <div class="col-auto forecast_card">
+                <p style="font-size: 20px; height: 0px;">{{dateToDay(day1['date'])}} {{day1['date'][8:]}}</p>
+                <img src="{{day1['day']['condition']['icon']}}" image id="weather-icon" alt="weather">
+                <br>
+                <p style="font-size: 20px; display: inline;">{{day1['day']['maxtemp_c']}}&deg;/</p>
+                <p style="font-size: 12px; display: inline;">{{day1['day']['mintemp_c']}}&deg;</p>
+                <p style="font-size: 15px;">{{day1['day']['condition']['text']}}</p>
+            </div>
+            <div class="col-auto forecast_card">
+                <p style="font-size: 20px; height: 0px;">{{dateToDay(day2['date'])}} {{day2['date'][8:]}}</p>
+                <img src="{{day2['day']['condition']['icon']}}" image id="weather-icon" alt="weather">
+                <br>
+                <p style="font-size: 20px; display: inline;">{{day2['day']['maxtemp_c']}}&deg;/</p>
+                <p style="font-size: 12px; display: inline;">{{day2['day']['mintemp_c']}}&deg;</p>
+                <p style="font-size: 15px;">{{day2['day']['condition']['text']}}</p>
+            </div>
+            <div class="col-auto forecast_card">
+                <p style="font-size: 20px; height: 0px;">{{dateToDay(day3['date'])}} {{day3['date'][8:]}}</p>
+                <img src="{{day3['day']['condition']['icon']}}" image id="weather-icon" alt="weather">
+                <br>
+                <p style="font-size: 20px; display: inline;">{{day3['day']['maxtemp_c']}}&deg;/</p>
+                <p style="font-size: 12px; display: inline;">{{day3['day']['mintemp_c']}}&deg;</p>
+                <p style="font-size: 15px;">{{day3['day']['condition']['text']}}</p>
+            </div>
+        </div>
+        <hr>
+    
+        <div id="line_chart"></div>
+        
+    </div>
+    {% endif %}
+
+    <script>
+        window.API_KEY = "{{API_KEY}}";
+    </script>
+
+    <style>
+        #search-card{
+            border: 2px solid gray;
+            border-radius: 5px;
+            height: 80px;
+            width: 470px;
+            margin-left: 445px;
+            padding: 20px;
+            background-color: aliceblue;
+            margin-bottom: 25px;
+
+        }
+
+        #weather-card{ 
+            color: white;
+            background-image: url('/static/images/sky3.jpg');
+            background-size: cover ;
+            background-position: center;
+            background-attachment: fixed;
+            height: 1200px;
+            border-radius: 10px;
+
+        }
+
+        #weather-icon{
+            height: 100px;
+            width: 100px;
+        }
+
+        .weather-info {
+        margin-bottom: 15px;
+        }
+
+        /* Style the weather detail rows */
+        .weather-detail {
+            text-align: center;
+        }
+
+        .weather-detail p {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* Add horizontal line between weather details and forecast cards */
+        hr {
+            margin: 30px 0;
+            border: 1px solid #ccc;
+        }
+
+        .forecast_card {
+            border: 2px solid rgba(0, 0, 0, 0);
+            padding: 10px;
+            border-radius: 5px;
+            transition: border-color 0.2s ease;
+        }
+
+        .forecast_card:hover {
+            border: 2px solid #ccc;
+        }
+
+        #line_chart {
+            height: 300px;
+            width: 1200px;
+        }
+
+    </style>
+{% endblock %}

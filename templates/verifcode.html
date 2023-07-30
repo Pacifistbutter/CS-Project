@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}
+OTP Verification
+{% endblock %}
+
+{% block main %}
+<div class="container" id="verifcode-card">
+    <h2>Enter Verification Code</h2>
+    <p>We have sent a code to {{session["email"]}}</p>
+    <hr>
+    <form action="/register" method="POST" onsubmit="actionOfForm()" id="myForm">
+        <div class="form-group mb-3" style="margin-left: 50px; margin-top: 30px;">
+            <label for="verificationCode" class="form-label" style="padding-right: 270px;">Code</label>
+            <input autofocus autocomplete="off" class="form-control w-75" style="margin-left: 10px;" placeholder="Enter your code here" name="code" type="number" id="verificationCode">
+        </div>
+        <button class="btn btn-primary disabled" id="submitButton" type="submit">Submit</button>        
+    </form>
+    <div id="verificationMessage" class="text-danger" style="margin-top: 32px;"></div>
+</div>
+
+<script>
+    // Function to validate the verification code length
+    function validateCodeLength() {
+        var codeInput = document.getElementById("verificationCode");
+        var code = codeInput.value;
+        var messageDiv = document.getElementById("verificationMessage");
+        var submitButton = document.getElementById("submitButton");
+
+        if (code.length !== 6) {
+            messageDiv.innerHTML = "Verification code must be exactly 6 characters long.";
+            codeInput.classList.add("is-invalid");
+            submitButton.disabled = true;
+        } else {
+            messageDiv.innerHTML = "";
+            codeInput.classList.remove("is-invalid");
+            submitButton.classList.remove("disabled");
+            submitButton.disabled = false;
+        }
+    }
+
+    function actionOfForm(){
+        var form = document.getElementById("myForm");
+        var pwdSession = '{{ session.get("pwd") }}';
+
+        if (pwdSession === 'None'){
+            form.action = "/login";
+        }else{
+            form.action = "/register";
+        }
+    }
+
+    // Event listener to check the code length when the input value changes
+    document.getElementById("verificationCode").addEventListener("input", validateCodeLength);
+</script>
+
+<style>
+    #verifcode-card{
+        border: 2px solid gray;
+        border-radius: 5px;
+        height: 400px;
+        width: 400px;
+        margin-left: 475px;
+        padding-top: 20px;
+        padding-right: 5px;
+        background-color: aliceblue;
+        color: black;
+        font-family: sans-serif;
+    }
+
+    #submitButton{
+        width: 210px;
+        border-radius: 30px;
+        margin-right: 10px;
+        margin-top: 10px;
+    }  
+</style>
+
+{% endblock %}
+
+

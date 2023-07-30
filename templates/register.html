@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block main %}
+
+<div id="register-card">
+    <h1 style="text-align: center; height: 70px;">Register</h1>
+    <form action="/register" method="post">
+        <div class="mb-3">
+            <label for="Email" class="form-label" style="margin-right: 195px;">Email Address</label>
+            <input class="form-control mx-auto w-75" autocomplete="on" autofocus placeholder="Your Email Address" id="email" name="email" type="email">
+        </div>
+        <div class="mb-3">
+            <label for="pwd" class="form-label" style="margin-right: 230px;">Password</label>
+            <input class="form-control mx-auto w-75" autocomplete="on" placeholder="Password" id="pwd" name="pwd" type="password">
+        </div>
+        <div class="mb-3">
+            <label for="rpwd" class="form-label" style="margin-right: 165px;">Confirm Password</label>
+            <input class="form-control mx-auto w-75" autocomplete="on" placeholder="Repeat your Password" id="rpwd" name="rpwd" type="password">
+        </div>
+        <button class="btn btn-primary" id="submitButton" type="submit">Register</button>
+    </form>
+    <p class="mt-4" style="font-size: smaller;">Already have a account?<a href="/login" style="text-decoration: none; font-size: 15px;">Login</a></p>
+</div>
+
+<style>
+    #register-card{
+        border: 2px solid gray;
+        border-radius: 5px;
+        height: 480px;
+        width: 400px;
+        margin-left: 475px;
+        padding-top: 20px;
+        padding-right: 5px;
+        background-color: aliceblue;
+    }
+
+    #submitButton{
+        width: 210px;
+        border-radius: 30px;
+        margin-top: 10px;
+    }  
+</style>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{%extends "layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block main %}
+<!--Things i can add here- A select button which uses javascript to change input type from password to text-->
+<!--Add form validation using bootstrap-->
+<div id="login-card">
+    <h1 style="text-align: center; height: 70px;">Login</h1>
+    <form action="/login" id="myForm" method="post">
+        <div class="mb-3">
+            <label for="email" class="form-label" style="margin-right: 255px;">Email</label>
+            <input class="form-control mx-auto w-75" autocomplete="on" placeholder="Your email please" id="email" name="email" type="email">
+        </div>
+        <div class="mb-3">
+            <label for="pwd" class="form-label" style="margin-right: 225px;">Password</label>
+            <input autocomplete="on" class="form-control mx-auto w-75" placeholder="Password" id="pwd" name="pwd" type="password">
+            <a onclick="changeFormAction()" id="forgetPass">Forgot Password?</a>
+        </div>
+        <br>
+        <button class="btn btn-primary" id="submitButton" type="submit"><strong>Login</strong></button>
+
+        <p class="mt-4" style="font-size: smaller;">Don't have a account?<a href="/register" style="text-decoration: none; font-size: 15px;">Register</a></p>
+    </form>
+</div>
+
+<div id="messageBar" class="text-danger mt-2"></div>
+
+<script>
+function changeFormAction(){
+    var form = document.getElementById("myForm");
+    var emailInput = document.getElementById("email");
+    var email = emailInput.value;
+    var outputBar = document.getElementById("messageBar");
+
+    if (email == null){
+        outputBar.innerHTML = "Please Enter you Email Address and then click on forget password";        
+    } else{
+        form.action = "/resetPassword";
+        form.submit()
+    }
+}
+</script>
+
+<style>
+
+    #login-card{
+        border: 2px solid gray;
+        border-radius: 5px;
+        height: 420px;
+        width: 400px;
+        margin-left: 475px;
+        padding-top: 20px;
+        padding-right: 5px;
+        background-color: aliceblue;
+    }
+
+    #forgetPass {
+        color: #312d2d;
+        padding-left: 185px;
+        font-size: smaller;
+    }
+
+    #forgetPass:hover {
+        text-decoration: underline;
+    }
+
+    #submitButton{
+        width: 210px;
+        border-radius: 30px;
+    }  
+
+</style>
+{% endblock %}

@@ -1,0 +1,2 @@
+Problems:
+    - API_KEY Can be seen from today.html using Google Chrome Developers Tools
