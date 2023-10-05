@@ -1,0 +1,144 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Todays weather
+{% endblock %}
+
+{% block main %}
+    <li>This page give a brief over view about todays weather</li>
+    <form class="row g-3 justify-content-lg-start" action="/today" id="locationForm" method="post">
+        <div class="col-auto">
+            <button class="btn btn-primary mb-3" type="button" onclick="getLocation()">Get location</button>
+        </div>
+        <div class="col-auto">
+            <input autofocus autocomplete="off" id="searchInput" class=" form-control col-sm-6 custom-select custom-select-sm mx-auto w-100" placeholder="City Name" name="city" type="text" list="suggestion">
+            <datalist id="suggestion">
+            </datalist>
+        </div>
+        
+        <input type="hidden" id="latitudeInput" name="latitude">
+        <input type="hidden" id="longitudeInput" name="longitude">
+        
+        <div class="col-auto">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    {% if isweather %}
+    <div class="container" id="weather-card">
+        <div class="row" style="height: 46px;">
+            <div class="col align-self-center mt-2">
+                <p style="font-size: 35px;">{{location["name"]}}, {{location["country"]}}</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" style="height: 88px;">
+            <div class="col-auto">
+                <img src="{{condition['icon']}}" image id="weather-icon" alt="weather">
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 70px;">{{current["temp_c"]|round|int}}&deg;C</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" style="font-size: 24px;">
+            <div class="col-auto">
+                {{condition['text']}}
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-auto">
+              {% set time = (location["localtime"])[10:] %}
+              {% if (time[:3]|int) == 0 %}
+              Updated as of 12:{{ time[3:] }} AM
+              {% elif (time[:3]|int) > 12 %}
+              Updated as of {{(time[0:3]|int) % 12}}{{time[3:]}} PM
+              {% else %}
+              Updated as of {{time}} AM
+              {% endif %}
+            </div>
+        </div>
+
+        <div class="row justify-content-center" style="height: 25px;">
+            <div class="col-auto">
+                <p style="font-size: 15px;">Feels Like {{current["feelslike_c"]|int}}&deg;C</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 15px;">Wind {{current["wind_kph"]|int}} Km/h</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 15px;">Visibility {{current["vis_km"]}} Km</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" style="height: 25px;">
+            <div class="col-auto">
+                <p style="font-size: 15px;">Pressure {{current["pressure_mb"]}} mb</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 15px;">Humidity {{current["humidity"]}}%</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 15px;">Precipitation {{current["precip_mm"]}} mm</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <p style="font-size: 15px;">UV Index {{current ["uv"]|int}}</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 15px;">US EPA AQI {{airQua["us-epa-index"]}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-evenly">
+            <div class="col-auto">
+                <p style="font-size: 15px; height: 0px;">{{dateToDay(day1['date'])}} {{day1['date'][8:]}}</p>
+                <img src="{{day1['day']['condition']['icon']}}" image id="weather-icon" alt="weather">
+                <br>
+                <p style="font-size: 20px; display: inline;">{{day1['day']['maxtemp_c']}}&deg;</p>
+                <p style="font-size: 12px; display: inline;">{{day1['day']['mintemp_c']}}&deg;</p>
+                <p style="font-size: 15px;">{{day1['day']['condition']['text']}}</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 15px; height: 0px;">{{dateToDay(day2['date'])}} {{day2['date'][8:]}}</p>
+                <img src="{{day2['day']['condition']['icon']}}" image id="weather-icon" alt="weather">
+                <br>
+                <p style="font-size: 20px; display: inline;">{{day2['day']['maxtemp_c']}}&deg;</p>
+                <p style="font-size: 12px; display: inline;">{{day2['day']['mintemp_c']}}&deg;</p>
+                <p style="font-size: 15px;">{{day2['day']['condition']['text']}}</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 15px; height: 0px;">{{dateToDay(day3['date'])}} {{day3['date'][8:]}}</p>
+                <img src="{{day3['day']['condition']['icon']}}" image id="weather-icon" alt="weather">
+                <br>
+                <p style="font-size: 20px; display: inline;">{{day3['day']['maxtemp_c']}}&deg;</p>
+                <p style="font-size: 12px; display: inline;">{{day3['day']['mintemp_c']}}&deg;</p>
+                <p style="font-size: 15px;">{{day3['day']['condition']['text']}}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        window.API_KEY = "{{API_KEY}}";
+    </script>
+
+    <style>
+        
+        #weather-card{ 
+            color: white;
+            background-image: url('/static/images/sky3.jpg');
+            background-size: cover ;
+            background-position: center;
+            height: 700px;
+        }
+
+        #weather-icon{
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+{% endblock %}
