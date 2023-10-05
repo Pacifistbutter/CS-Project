@@ -1,7 +1,1 @@
-Environment variables added
-export MAIL_DEFAULT_SENDER="botdonotreply22@gmail.com"
-export MAIL_PASSWORD="gdhciianyfjjxscw"
-export MAIL_USERNAME="botdonotreply22@gmail.com"
-env | grep MAIL - this command can be used to find all the Environment variables with mail word in it.
-old - "sky.net.com" to new - "gdhciianyfjjxscw"
-export API_KEY="e16610ba018d43a195b73901230107"
+
