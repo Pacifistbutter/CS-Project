@@ -38,3 +38,6 @@
 3. Save the `.env` file in the same directory as your code files.
 
 You're now ready to work with the project.
+#### Executing the program: 
+   Use `flask run` in projects root directory To execute the program.
+   
