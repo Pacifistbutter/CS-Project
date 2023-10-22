@@ -13,8 +13,8 @@ function showLocation(position) {
     // Update form input with latitude and longitude
     document.getElementById("latitudeInput").value = latitude;
     document.getElementById("longitudeInput").value = longitude;
-    console.log(latitude);
-    console.log(longitude);
+    // console.log(latitude);
+    // console.log(longitude);
     // Submits the form
     document.getElementById("locationForm").submit()
 }

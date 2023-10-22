@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Favourites
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/css/favourite.css">
+{% endblock %}
+
+{% block main %}
+
+<form id="submitForm" action="/today" method="post">
+	<input id="city" name="city" type="hidden" value="null">
+</form>
+
+<input type="hidden" id="favArray" value='{{cities}}'>
+
+
+<div class="block" style="padding-top: 20px;">
+    <h1 style="text-align: left; color: #333333;">Favourites Places</h1>
+
+    <div class="scrollable-container">
+	  <div class="list-group">
+		<div id="favMainCard"></div>
+		</div>
+      </div>
+
+		<div class="container mt-3">
+			<form action="/favourite" method="post">
+				<div class="row">
+					<div class="col-md-6 mx-auto">
+						<div class="input-group">
+							<input autocomplete="off" id="searchInput" class="form-control col-sm-6 custom-select custom-select-sm mx-auto w-75" placeholder="City Name" name="add" type="text" list="suggestion">
+							<datalist id="suggestion">
+							</datalist>
+							<div class="input-group-append">
+								<button class="btn btn-primary" type="submit">
+									<i class="fa fa-search"></i> Add City
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+</div>
+
+<script src="/static/js/favourite.js" type="text/javascript"></script>
+<script>
+	window.API_KEY = "{{API_KEY}}";
+
+	const formBar = document.getElementById("submitForm");
+	const inputBar = document.getElementById("city");
+
+	function submitter(cityValue) {
+		console.log(cityValue);
+		inputBar.value = cityValue;
+
+		formBar.submit();
+	}
+
+</script>
+
+{% endblock %}

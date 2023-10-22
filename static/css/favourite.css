@@ -1,0 +1,49 @@
+	.block {
+		width: 1280px; /* Adjust the width as needed */
+		height: 800px; /* Adjust the height as needed */
+		background-color: white;
+		border: 1px solid #ccc; /* Add borders if desired */
+		margin: 20px; /* Add margin for spacing */
+		padding: 40px; /* Add padding inside the box if needed */
+		border-radius: 15px;
+		background-image: url('/static/images/favCard1.jpg');
+		background-repeat: repeat;
+		background-size: 300px 300px;
+		      
+	}
+      
+	/* styles.css */
+	.scrollable-container {
+		width: 1200px; /* Set a fixed width or adjust as needed */
+		height: 600px; /* Set a fixed height or adjust as needed */
+		overflow: auto; /* This makes the container scrollable */
+		border: 2px solid #ccc; /* Add a border for visibility */
+		border-radius: 15px;
+		/* backdrop-filter: blur(2px); */
+	}
+
+	.delete-button {
+		top: 0px;
+		right: 0px;
+		position: absolute;
+	}
+
+	#favCardMid	p{
+		margin-top: 16px;
+		margin-bottom: 0px;
+	}
+
+	#favCard {
+		/* background-image: url('/static/images/favCard1.jpg');
+		background-repeat: repeat;
+		background-size: 200px 200px; */
+		/* font-weight: bold; */
+		color: #333333;
+		background: transparent;
+		backdrop-filter: blur(1px);
+	}
+
+	#favCard:hover{
+		background: transparent;
+		backdrop-filter: blur(8px);
+	}

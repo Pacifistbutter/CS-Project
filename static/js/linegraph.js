@@ -1,18 +1,18 @@
-var searchInput = document.getElementById("searchInput");
 google.charts.load('current', { packages: ['corechart', 'line'] });
 google.charts.setOnLoadCallback(drawBasic);
 
 function drawBasic() {
   var data = new google.visualization.DataTable();
   data.addColumn('timeofday', 'Time'); // Using timeofday type for x-axis
-  data.addColumn('number', 'temp_c');
+  data.addColumn('number', 'Temp C');
 
   const xhr = new XMLHttpRequest();
-  var q = searchInput.value;
-  console.log(q);
+  // console.log('searchInput:', testID);
+  var q = testID.value;
+  // console.log(q);
   var API_KEY = window.API_KEY;
-  console.log(API_KEY);
-  var url = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=london&days=3&aqi=yes&alerts=no`
+  // console.log(API_KEY);
+  var url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${q}&days=3&aqi=yes&alerts=no`
   // Open the object
   xhr.open('GET', url , true);
   let array = [];
@@ -21,7 +21,7 @@ function drawBasic() {
   xhr.onload = function () {
     if (this.status === 200) {
       let obj = JSON.parse(this.responseText);
-      console.log("done");
+      //console.log("done");
       let minTemp = Infinity;
       let maxTemp = -Infinity;
       for (var i = 0; i < 24; i += 3) {
@@ -29,7 +29,7 @@ function drawBasic() {
         var hour = parseInt(obj.forecast.forecastday[0].hour[i].time.slice(11, 13));
         var temp = parseInt(obj.forecast.forecastday[0].hour[i].temp_c);
 
-        console.log(hour + " " + temp);
+        //console.log(hour + " " + temp);
         array.push([[hour, 0, 0], temp]); // Include minutes and seconds as 0
 
         if (temp < minTemp) {

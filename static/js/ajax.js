@@ -2,14 +2,14 @@ var searchInput = document.getElementById("searchInput");
 searchInput.addEventListener('keyup', searchHandler);
 
 function searchHandler() {
-    console.log('You have clicked the search handler');
+    // console.log('You have clicked the search handler');
 
     // Instantiate an xhr object
     const xhr = new XMLHttpRequest();
     var q = searchInput.value;
-    console.log(q);
+    // console.log(q);
     var API_KEY = window.API_KEY;
-    console.log(API_KEY);
+    // console.log(API_KEY);
     var url = `http://api.weatherapi.com/v1/search.json?key=${API_KEY}&q=${q}`
     // Open the object
     xhr.open('GET', url , true);
@@ -19,7 +19,6 @@ function searchHandler() {
     xhr.onload = function () {
         if(this.status === 200){
             let obj = JSON.parse(this.responseText);
-            console.log(obj);
             let suggestion = document.getElementById('suggestion');
             str = "";
             for (key in obj)
@@ -35,6 +34,6 @@ function searchHandler() {
 
     // send the request
     xhr.send();
-    console.log("We are done fetching employees!");
+    // console.log("We are done fetching employees!");
     
 }

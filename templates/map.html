@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Map
+{% endblock %}
+
+{% block main %}
+
+{% if isweather %} 
+    <input type="hidden" id="searchInput" value="{{location['name']}}">
+    <script>
+        // console.log("{{location['name']}}");
+        // console.log(searchInput);
+        document.addEventListener("DOMContentLoaded", function() {
+            openMap();
+        });
+    </script>
+{% endif %}
+
+<div id="search-card">
+    <form class="row g-3 justify-content-lg-start" action="/map" id="locationForm" method="post">
+        <div class="col-auto">
+            <button class="btn btn-primary mb-3" type="button" onclick="getLocation()">Get location</button>
+        </div>
+        <div class="col-auto">
+            <input autocomplete="off" id="searchInput" class="form-control col-sm-6 custom-select custom-select-sm mx-auto w-75" placeholder="City Name" name="city" type="text" list="suggestion">
+            <datalist id="suggestion">
+            </datalist>
+        </div>
+
+        <input type="hidden" id="latitudeInput" name="latitude">
+        <input type="hidden" id="longitudeInput" name="longitude">
+
+        <div class="col-auto">
+            <button class="btn btn-primary" onclick="openMap()" type="button">Search</button>
+        </div>
+    </form>
+</div>
+<!-- <button class="btn btn-primary" id="test" type="button" onclick="dosomething()">Search</button>
+<div id="divtest"></div> -->
+
+<div id="weather-map" style="height: 400px;"></div>
+
+<style>
+    #search-card{
+        border: 2px solid gray;
+        border-radius: 5px;
+        height: 80px;
+        width: 470px;
+        margin-left: 445px;
+        padding: 20px;
+        background-color: aliceblue;
+        margin-bottom: 25px;
+
+    }
+</style>
+
+<script>
+    window.API_KEY = "{{API_KEY}}";
+</script>
+{% endblock %}
