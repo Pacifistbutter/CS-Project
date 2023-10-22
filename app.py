@@ -2,15 +2,20 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from flask_mail import Message, Mail
 from werkzeug.security import generate_password_hash, check_password_hash
-from helpers import lookup, search, dateToDay
+from helpers import search, dateToDay, login_required, add, remove, favArray
+from flask_cors import CORS
 import sqlite3
 import os
 import random
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5000"}}) 
 
 API_KEY = os.environ["API_KEY"]
 app.config["SECRET_KEY"] = os.urandom(24)
+
+# Set your static folder path
+app.config['UPLOAD_FOLDER'] = 'static' 
 
 # Session Configure
 app.config["SESSION_PERMANENT"] = False
@@ -34,7 +39,8 @@ mail = Mail(app)
 def index():
     # if not session.get("user_id"):
     #     return redirect("/login")
-    return render_template("index.html")
+
+    return redirect('/today')
 
 # Login page
 # Validate the email and password (pwd is check using hash pwd)
@@ -97,6 +103,7 @@ def login():
     
     else:
         return render_template("login.html")
+
 
 # logging the user out
 @app.route("/logout")
@@ -210,7 +217,7 @@ def today():
             latitude = request.form.get("latitude")
             longitude = request.form.get("longitude")
             if not latitude:
-                flash("Please enter the city you want see weather of!")
+                flash("Please enter the city you want see weather of!", "warning")
                 return render_template("today.html")
             q = f"{latitude},{longitude}"
         else:
@@ -248,13 +255,56 @@ def today():
         return render_template("today.html", isweather=False, API_KEY=API_KEY)
     
         
-@app.route("/hourly", methods=['GET', 'POST'])
-def hourly():
+@app.route("/map", methods=['GET', 'POST'])
+def map():
     if request.method == "POST":
-        return render_template("hourly.html")
+        city = request.form.get("city")
+        if not city:
+            latitude = request.form.get("latitude")
+            longitude = request.form.get("longitude")
+            if not latitude:
+                flash("Please enter the city you want see weather of!", "warning")
+                return render_template("today.html")
+            q = f"{latitude},{longitude}"
+        else:
+            q = f"{city}"
+        weather = search(q)
+        if not weather:
+            flash("you got nothing!")
+            return render_template("today.html")
+ 
+        location = weather["location"]
+        current = weather["current"]
+
+        context = {
+            "API_KEY": API_KEY,
+            "isweather": True,
+            "location": location,
+            "current": current,
+        }
+
+        return render_template("map.html", **context)
     
     else:
-        return render_template("hourly.html")
+        return render_template("map.html", isweather=False, API_KEY=API_KEY)
+
+
+@app.route("/favourite", methods=["GET", "POST"])
+@login_required
+def favourite():
+    if request.method == "POST":
+        if request.form.get('add'):
+            city = request.form.get('add')
+            add(city)
+        elif request.form.get('remove'):
+            city = request.form.get('remove')
+            remove(city)
+
+        cities = favArray()
+        return render_template("favourite.html", API_KEY=API_KEY, cities=cities)
+    else:
+        cities = favArray()
+        return render_template("favourite.html", API_KEY=API_KEY, cities=cities)
 
 
 @app.route("/resetPassword", methods=["GET", "POST"])

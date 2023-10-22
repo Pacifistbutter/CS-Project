@@ -1,2 +1,3 @@
 Problems:
     - API_KEY Can be seen from today.html using Google Chrome Developers Tools
+    - Used "Allow CORS: Access-Control-Allow-Origin" named Chrome extention to suppress Cross-Origin Resource Sharing (CORS) issue
