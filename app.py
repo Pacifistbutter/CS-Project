@@ -7,6 +7,7 @@ from flask_cors import CORS
 import sqlite3
 import os
 import random
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5000"}}) 
@@ -24,6 +25,8 @@ Session(app)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+load_dotenv()
 
 # Mail Configuration - Getting some big problems We need to implement OAuth 2.0 which will take some work
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_DEFAULT_SENDER"]
