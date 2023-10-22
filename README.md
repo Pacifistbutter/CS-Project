@@ -1,5 +1,5 @@
 # WindiX - API-based Weather Reporting Web Application - 
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <https://youtu.be/2HRVx4BCW6U>
 #### Description: WindiX is a web application designed to provide users with comprehensive weather information for cities around the world. Leveraging a range of cutting-edge technologies and APIs, WindiX offers real-time weather data, interactive maps, geolocation services, and the convenience of saving favorite cities for quick access.
 
 #### Techologies Used: Python FrameWork Flask, JavaScript, Html and CSS, Bootstrap, AJAX(Basics) and SQLite.
@@ -24,3 +24,17 @@
 
 - **AJAX (Basic)**: Used AJAX on city seachbar to display city names on the basis of what user type.
 
+#### Setting Up Environment Variables
+
+1. Create a `.env` file in your project's root directory.
+
+2. Add the following variables to the `.env` file:
+
+   - `API_KEY`: Replace `<api-key>` with your WeatherAPI.Chrome API key.
+   - `MAIL_DEFAULT_SENDER`: Set this to your bot's email for sending user emails.
+   - `MAIL_USERNAME`: Use your bot's email address again.
+   - `MAIL_PASSWORD`: Enter your bot's email app password.
+
+3. Save the `.env` file in the same directory as your code files.
+
+You're now ready to work with the project.
