@@ -1,0 +1,4 @@
+export API_KEY="e16610ba018d43a195b73901230107"
+export MAIL_DEFAULT_SENDER="botdonotreply22@gmail.com"
+export MAIL_USERNAME="botdonotreply22@gmail.com"
+export MAIL_PASSWORD="sykogcnkbmolylzg
